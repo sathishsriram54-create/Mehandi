@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mehandi — The Art of Henna</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #fdf6ec;
+      --deep: #1a0a00;
+      --rust: #b5451b;
+      --gold: #c8922a;
+      --gold-light: #e8b84b;
+      --brown: #6b2d0f;
+      --sand: #e8d5b0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--deep);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, width 0.3s, height 0.3s, background 0.3s;
+      mix-blend-mode: multiply;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: all 0.18s ease;
+      opacity: 0.6;
+    }
+
+    /* Noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      background: var(--deep);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 60px 80px 80px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-left::after {
+      content: '';
+      position: absolute;
+      right: -40px;
+      top: 0; bottom: 0;
+      width: 80px;
+      background: var(--deep);
+      clip-path: polygon(0 0, 40% 0, 100% 50%, 40% 100%, 0 100%);
+      z-index: 3;
+    }
+
+    .tagline-small {
+      font-family: 'Lato', sans-serif;
+      letter-spacing: 0.3em;
+      font-size: 0.7rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 1s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 1.1;
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fadeUp 1s 0.5s forwards;
+    }
+
+    .hero-title span {
+      color: var(--gold-light);
+      display: block;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--sand);
+      margin: 24px 0 48px;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeUp 1s 0.7s forwards;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      padding: 16px 40px;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Lato', sans-serif;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.4s;
+      cursor: none;
+      opacity: 0;
+      animation: fadeUp 1s 0.9s forwards;
+    }
+
+    .hero-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+      z-index: -1;
+    }
+    .hero-cta:hover { color: var(--deep); }
+    .hero-cta:hover::before { transform: scaleX(1); }
+
+    /* Decorative henna mandala SVG side */
+    .hero-right {
+      background: var(--rust);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, #8b2500 0%, var(--rust) 60%, #6b1a00 100%);
+    }
+
+    .mandala-wrap {
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeIn 1.5s 1s forwards;
+    }
+
+    .mandala-wrap svg {
+      width: min(420px, 80vw);
+      height: min(420px, 80vw);
+      filter: drop-shadow(0 0 60px rgba(200,146,42,0.4));
+    }
+
+    .floating-petal {
+      position: absolute;
+      opacity: 0.15;
+      animation: floatPetal 8s ease-in-out infinite;
+    }
+
+    /* ─── STRIP ─── */
+    .strip {
+      background: var(--gold);
+      padding: 18px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .strip-inner {
+      display: inline-block;
+      animation: marquee 18s linear infinite;
+    }
+
+    .strip-inner span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--deep);
+      padding: 0 48px;
+    }
+
+    .strip-inner span::after {
+      content: ' ✦ ';
+      color: var(--brown);
+    }
+
+    /* ─── ABOUT ─── */
+    .about {
+      padding: 120px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .about-art {
+      position: relative;
+    }
+
+    .about-art .big-circle {
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: var(--sand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-art .big-circle::after {
+      content: '';
+      position: absolute;
+      inset: 16px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      opacity: 0.5;
+    }
+
+    .about-art .accent-circle {
+      position: absolute;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: var(--rust);
+      top: -20px; right: -10px;
+      z-index: -1;
+    }
+
+    .about-art .small-line {
+      position: absolute;
+      bottom: 10px; left: -30px;
+      width: 80px; height: 1px;
+      background: var(--gold);
+    }
+
+    .section-label {
+      font-family: 'Lato', sans-serif;
+      letter-spacing: 0.35em;
+      font-size: 0.65rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      color: var(--deep);
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--rust);
+    }
+
+    .section-body {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: #4a2c10;
+      margin-bottom: 20px;
+    }
+
+    /* ─── SERVICES ─── */
+    .services {
+      background: var(--deep);
+      padding: 100px 80px;
+    }
+
+    .services-header {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+
+    .services-header .section-title { color: var(--cream); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .service-card {
+      background: #230d00;
+      padding: 52px 40px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s;
+    }
+
+    .service-card:hover { background: #2e1200; }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-num {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 3rem;
+      color: #3a1800;
+      position: absolute;
+      top: 20px; right: 28px;
+      line-height: 1;
+      transition: color 0.4s;
+    }
+    .service-card:hover .service-num { color: #4a2200; }
+
+    .service-icon {
+      width: 44px; height: 44px;
+      margin-bottom: 28px;
+    }
+
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: var(--cream);
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+
+    .service-desc {
+      font-size: 0.9rem;
+      color: #a07850;
+      line-height: 1.8;
+    }
+
+    /* ─── PROCESS ─── */
+    .process {
+      padding: 120px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .process-header {
+      margin-bottom: 72px;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 28px; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), var(--gold), transparent);
+    }
+
+    .step {
+      text-align: center;
+      padding: 0 24px;
+      position: relative;
+    }
+
+    .step-dot {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--cream);
+      border: 1px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 28px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      position: relative;
+      z-index: 1;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .step:hover .step-dot {
+      background: var(--gold);
+      color: var(--deep);
+    }
+
+    .step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--deep);
+    }
+
+    .step-desc {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #6b4020;
+    }
+
+    /* ─── OCCASIONS ─── */
+    .occasions {
+      background: var(--sand);
+      padding: 100px 80px;
+    }
+
+    .occasions-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .occasions-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .occasion-pill {
+      padding: 14px 32px;
+      border: 1px solid var(--brown);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--brown);
+      transition: all 0.3s;
+      cursor: none;
+    }
+
+    .occasion-pill:hover {
+      background: var(--brown);
+      color: var(--cream);
+    }
+
+    /* ─── BOOKING ─── */
+    .booking {
+      background: var(--rust);
+      padding: 100px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .booking::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .booking::after {
+      content: '';
+      position: absolute;
+      width: 900px; height: 900px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.06);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .booking-content { position: relative; z-index: 2; }
+
+    .booking .section-label { color: rgba(255,255,255,0.6); }
+    .booking .section-title {
+      color: var(--cream);
+      font-size: clamp(2.2rem, 4vw, 4rem);
+      margin-bottom: 20px;
+    }
+
+    .booking-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 48px;
+    }
+
+    .book-btn {
+      display: inline-block;
+      padding: 20px 56px;
+      background: var(--cream);
+      color: var(--rust);
+      font-family: 'Lato', sans-serif;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: none;
+    }
+    .book-btn:hover {
+      background: var(--deep);
+      color: var(--gold);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--deep);
+      padding: 60px 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.5rem;
+      color: var(--gold);
+    }
+
+    .footer-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: #6b4020;
+      font-size: 0.95rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .footer-links a {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #6b4020;
+      text-decoration: none;
+      transition: color 0.3s;
+      cursor: none;
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ─── GALLERY ─── */
+    .gallery {
+      padding: 100px 80px;
+      background: var(--cream);
+    }
+
+    .gallery-header {
+      margin-bottom: 56px;
+    }
+
+    .insta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--rust);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      margin-top: 12px;
+      transition: color 0.3s;
+      cursor: none;
+    }
+    .insta-link:hover { color: var(--gold); }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 260px 260px;
+      gap: 12px;
+      max-width: 1100px;
+      margin: 0 auto 48px;
+    }
+
+    .gallery-card {
+      position: relative;
+      overflow: hidden;
+      cursor: none;
+    }
+
+    .gc1 { background: linear-gradient(135deg, #8b2500, #c8922a); }
+    .gc2 { background: linear-gradient(135deg, #3d1a00, #b5451b); }
+    .gc3 { background: linear-gradient(135deg, #c8922a, #e8d5b0); }
+    .gc4 { background: linear-gradient(135deg, #6b2d0f, #c8922a); }
+    .gc5 { background: linear-gradient(135deg, #b5451b, #8b2500); }
+    .gc6 { background: linear-gradient(135deg, #e8d5b0, #c8922a); }
+
+    /* Decorative henna SVG pattern on each card */
+    .gallery-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='30' fill='none' stroke='rgba(255,255,255,0.1)' stroke-width='0.8'/%3E%3Ccircle cx='40' cy='40' r='20' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='0.6'/%3E%3Ccircle cx='40' cy='40' r='5' fill='rgba(255,255,255,0.1)'/%3E%3Cellipse cx='40' cy='14' rx='4' ry='10' fill='rgba(255,255,255,0.08)'/%3E%3Cellipse cx='40' cy='14' rx='4' ry='10' fill='rgba(255,255,255,0.08)' transform='rotate(90,40,40)'/%3E%3Cellipse cx='40' cy='14' rx='4' ry='10' fill='rgba(255,255,255,0.08)' transform='rotate(180,40,40)'/%3E%3Cellipse cx='40' cy='14' rx='4' ry='10' fill='rgba(255,255,255,0.08)' transform='rotate(270,40,40)'/%3E%3C/svg%3E");
+      background-size: 120px;
+      opacity: 0.7;
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(26,10,0,0.3);
+      display: flex;
+      align-items: flex-end;
+      padding: 24px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .gallery-card:hover .gallery-overlay { opacity: 1; }
+
+    .gallery-overlay span {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--cream);
+      letter-spacing: 0.05em;
+    }
+
+    .gallery-cta {
+      text-align: center;
+    }
+
+    .insta-follow-box {
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .insta-follow-inner {
+      border: 1px solid var(--sand);
+      padding: 60px 48px;
+      background: #fff9f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .insta-icon-wrap {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      display: flex; align-items: center; justify-content: center;
+      padding: 2px;
+    }
+
+    .insta-icon-wrap svg {
+      background: #fff9f2;
+      border-radius: 50%;
+      padding: 14px;
+      stroke: url(#ig-grad);
+    }
+
+    .insta-follow-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--deep);
+    }
+
+    .insta-follow-handle {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      color: var(--rust);
+      text-transform: uppercase;
+    }
+
+    .insta-follow-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: #6b4020;
+      line-height: 1.7;
+      max-width: 380px;
+    }
+
+    .insta-follow-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+      padding: 14px 36px;
+      background: linear-gradient(135deg, #f09433, #dc2743, #bc1888);
+      color: white;
+      font-family: 'Lato', sans-serif;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      text-decoration: none;
+      transition: opacity 0.3s, transform 0.3s;
+      cursor: none;
+    }
+    .insta-follow-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+
+    
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 36px;
+      border: 1px solid var(--rust);
+      color: var(--rust);
+      font-family: 'Lato', sans-serif;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: none;
+    }
+    .insta-btn:hover {
+      background: var(--rust);
+      color: var(--cream);
+    }
+
+    /* Booking buttons */
+    .booking-btns {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .book-btn-wa {
+      background: transparent !important;
+      color: var(--cream) !important;
+      border: 1px solid rgba(255,255,255,0.4) !important;
+    }
+    .book-btn-wa:hover {
+      background: rgba(255,255,255,0.1) !important;
+    }
+
+    /* ─── BOOKING OVERLAY ─── */
+    .booking-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26,10,0,0.85);
+      z-index: 9990;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      backdrop-filter: blur(4px);
+    }
+    .booking-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .booking-modal {
+      background: var(--cream);
+      max-width: 480px;
+      width: 100%;
+      padding: 52px 44px;
+      position: relative;
+      transform: translateY(30px);
+      transition: transform 0.4s ease;
+    }
+    .booking-overlay.active .booking-modal {
+      transform: translateY(0);
+    }
+    .modal-close {
+      position: absolute;
+      top: 18px; right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      color: var(--brown);
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px 8px;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--rust); }
+    .modal-label {
+      font-family: 'Lato', sans-serif;
+      letter-spacing: 0.3em;
+      font-size: 0.65rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: var(--deep);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .modal-title em { color: var(--rust); font-style: italic; }
+    .modal-sub {
+      font-size: 0.9rem;
+      color: #6b4020;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .modal-form { display: flex; flex-direction: column; gap: 20px; }
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+    .form-group label {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brown);
+    }
+    .form-group input,
+    .form-group select {
+      border: none;
+      border-bottom: 1px solid var(--sand);
+      background: transparent;
+      padding: 10px 4px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--deep);
+      outline: none;
+      transition: border-color 0.3s;
+      cursor: text;
+    }
+    .form-group select { cursor: pointer; }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-bottom-color: var(--gold);
+    }
+    .form-group input::placeholder { color: #c4a882; }
+    .modal-book-btn {
+      margin-top: 8px;
+      padding: 16px;
+      background: var(--rust);
+      color: var(--cream);
+      border: none;
+      font-family: 'Lato', sans-serif;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .modal-book-btn:hover { background: var(--brown); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    @keyframes floatPetal {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(10deg); }
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes spin-rev {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(-360deg); }
+    }
+
+    .spin { animation: spin-slow 40s linear infinite; }
+    .spin-rev { animation: spin-rev 30s linear infinite; }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 60px 32px; }
+      .hero-left::after { display: none; }
+      .hero-right { height: 360px; }
+      .about { grid-template-columns: 1fr; padding: 80px 32px; gap: 48px; }
+      .about-art { display: none; }
+      .services { padding: 80px 32px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .process { padding: 80px 32px; }
+      .process-steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .process-steps::before { display: none; }
+      .occasions { padding: 80px 32px; }
+      .gallery { padding: 80px 32px; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 200px); }
+      
+      footer { flex-direction: column; gap: 24px; padding: 40px 32px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="tagline-small">The Ancient Art of Henna</p>
+      <h1 class="hero-title">
+        Mehandi
+        <span>मेहंदी</span>
+      </h1>
+      <p class="hero-subtitle">
+        Where tradition meets artistry.<br>
+        Intricate patterns woven with love,<br>
+        one hand at a time.
+      </p>
+      <a href="#" onclick="openBooking(); return false;" class="hero-cta">Book Your Design</a>
+    </div>
+
+    <div class="hero-right">
+      <!-- Henna mandala SVG -->
+      <div class="mandala-wrap">
+        <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer ring -->
+          <g class="spin" style="transform-origin:200px 200px">
+            <circle cx="200" cy="200" r="185" stroke="#e8b84b" stroke-width="0.7" stroke-dasharray="4 6"/>
+            <circle cx="200" cy="15" r="5" fill="#e8b84b" opacity="0.6"/>
+            <circle cx="200" cy="385" r="5" fill="#e8b84b" opacity="0.6"/>
+            <circle cx="15" cy="200" r="5" fill="#e8b84b" opacity="0.6"/>
+            <circle cx="385" cy="200" r="5" fill="#e8b84b" opacity="0.6"/>
+            <!-- petals outer -->
+            <ellipse cx="200" cy="40" rx="8" ry="22" fill="none" stroke="#e8b84b" stroke-width="0.8" opacity="0.7" transform="rotate(0,200,200)"/>
+            <ellipse cx="200" cy="40" rx="8" ry="22" fill="none" stroke="#e8b84b" stroke-width="0.8" opacity="0.7" transform="rotate(45,200,200)"/>
+            <ellipse cx="200" cy="40" rx="8" ry="22" fill="none" stroke="#e8b84b" stroke-width="0.8" opacity="0.7" transform="rotate(90,200,200)"/>
+            <ellipse cx="200" cy="40" rx="8" ry="22" fill="none" stroke="#e8b84b" stroke-width="0.8" opacity="0.7" transform="rotate(135,200,200)"/>
+            <ellipse cx="200" cy="40" rx="8" ry="22" fill="none" stroke="#e8b84b" stroke-width="0.8" opacity="0.7" transform="rotate(180,200,200)"/>
+            <ellipse cx="200" cy="40" rx="8" ry="22" fill="none" stroke="#e8b84b" stroke-width="0.8" opacity="0.7" transform="rotate(225,200,200)"/>
+            <ellipse cx="200" cy="40" rx="8" ry="22" fill="none" stroke="#e8b84b" stroke-width="0.8" opacity="0.7" transform="rotate(270,200,200)"/>
+            <ellipse cx="200" cy="40" rx="8" ry="22" fill="none" stroke="#e8b84b" stroke-width="0.8" opacity="0.7" transform="rotate(315,200,200)"/>
+          </g>
+
+          <!-- Mid ring -->
+          <g class="spin-rev" style="transform-origin:200px 200px">
+            <circle cx="200" cy="200" r="140" stroke="#c8922a" stroke-width="0.8" opacity="0.5"/>
+            <circle cx="200" cy="200" r="130" stroke="#c8922a" stroke-width="0.4" stroke-dasharray="2 8" opacity="0.4"/>
+            <!-- Leaves -->
+            <path d="M200 70 Q220 100 200 130 Q180 100 200 70Z" fill="#c8922a" opacity="0.4"/>
+            <path d="M200 70 Q220 100 200 130 Q180 100 200 70Z" fill="#c8922a" opacity="0.4" transform="rotate(60,200,200)"/>
+            <path d="M200 70 Q220 100 200 130 Q180 100 200 70Z" fill="#c8922a" opacity="0.4" transform="rotate(120,200,200)"/>
+            <path d="M200 70 Q220 100 200 130 Q180 100 200 70Z" fill="#c8922a" opacity="0.4" transform="rotate(180,200,200)"/>
+            <path d="M200 70 Q220 100 200 130 Q180 100 200 70Z" fill="#c8922a" opacity="0.4" transform="rotate(240,200,200)"/>
+            <path d="M200 70 Q220 100 200 130 Q180 100 200 70Z" fill="#c8922a" opacity="0.4" transform="rotate(300,200,200)"/>
+          </g>
+
+          <!-- Inner ring -->
+          <g class="spin" style="transform-origin:200px 200px">
+            <circle cx="200" cy="200" r="90" stroke="#e8b84b" stroke-width="1" opacity="0.6"/>
+            <circle cx="200" cy="200" r="80" stroke="#e8b84b" stroke-width="0.4" stroke-dasharray="3 5" opacity="0.4"/>
+            <!-- Dots -->
+            <circle cx="200" cy="115" r="4" fill="#e8b84b" opacity="0.8"/>
+            <circle cx="200" cy="115" r="4" fill="#e8b84b" opacity="0.8" transform="rotate(45,200,200)"/>
+            <circle cx="200" cy="115" r="4" fill="#e8b84b" opacity="0.8" transform="rotate(90,200,200)"/>
+            <circle cx="200" cy="115" r="4" fill="#e8b84b" opacity="0.8" transform="rotate(135,200,200)"/>
+            <circle cx="200" cy="115" r="4" fill="#e8b84b" opacity="0.8" transform="rotate(180,200,200)"/>
+            <circle cx="200" cy="115" r="4" fill="#e8b84b" opacity="0.8" transform="rotate(225,200,200)"/>
+            <circle cx="200" cy="115" r="4" fill="#e8b84b" opacity="0.8" transform="rotate(270,200,200)"/>
+            <circle cx="200" cy="115" r="4" fill="#e8b84b" opacity="0.8" transform="rotate(315,200,200)"/>
+          </g>
+
+          <!-- Center flower -->
+          <circle cx="200" cy="200" r="40" fill="#b5451b" opacity="0.6"/>
+          <circle cx="200" cy="200" r="32" fill="none" stroke="#e8b84b" stroke-width="1"/>
+          <circle cx="200" cy="200" r="18" fill="#c8922a" opacity="0.8"/>
+          <circle cx="200" cy="200" r="10" fill="#e8b84b"/>
+          <circle cx="200" cy="200" r="4" fill="#1a0a00"/>
+
+          <!-- Teardrop shapes around center -->
+          <ellipse cx="200" cy="165" rx="7" ry="14" fill="#e8b84b" opacity="0.7"/>
+          <ellipse cx="200" cy="165" rx="7" ry="14" fill="#e8b84b" opacity="0.7" transform="rotate(60,200,200)"/>
+          <ellipse cx="200" cy="165" rx="7" ry="14" fill="#e8b84b" opacity="0.7" transform="rotate(120,200,200)"/>
+          <ellipse cx="200" cy="165" rx="7" ry="14" fill="#e8b84b" opacity="0.7" transform="rotate(180,200,200)"/>
+          <ellipse cx="200" cy="165" rx="7" ry="14" fill="#e8b84b" opacity="0.7" transform="rotate(240,200,200)"/>
+          <ellipse cx="200" cy="165" rx="7" ry="14" fill="#e8b84b" opacity="0.7" transform="rotate(300,200,200)"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BOOKING FORM OVERLAY ── -->
+  <div class="booking-overlay" id="bookingOverlay">
+    <div class="booking-modal">
+      <button class="modal-close" onclick="closeBooking()">✕</button>
+      <p class="modal-label">Begin Your Journey</p>
+      <h2 class="modal-title">Book Your <em>Design</em></h2>
+      <p class="modal-sub">Tell us a little about yourself and we'll get in touch right away.</p>
+      <div class="modal-form">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="bookName" placeholder="e.g. Priya Sharma" />
+        </div>
+        <div class="form-group">
+          <label>Your Place</label>
+          <input type="text" id="bookPlace" placeholder="e.g. Hyderabad" />
+        </div>
+        <div class="form-group">
+          <label>Design You Want</label>
+          <select id="bookDesign">
+            <option value="">Select a design style...</option>
+            <option>Bridal Mehandi</option>
+            <option>Arabic Patterns</option>
+            <option>Rajasthani Art</option>
+            <option>Festive Design</option>
+            <option>Custom Art</option>
+            <option>Kids &amp; Events</option>
+          </select>
+        </div>
+        <button class="modal-book-btn" onclick="submitBooking()">
+          💬 Book Now on WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MARQUEE ── -->
+  <div class="strip">
+    <div class="strip-inner">
+      <span>Bridal Mehandi</span>
+      <span>Arabic Patterns</span>
+      <span>Rajasthani Designs</span>
+      <span>Floral Art</span>
+      <span>Festive Occasions</span>
+      <span>Bridal Mehandi</span>
+      <span>Arabic Patterns</span>
+      <span>Rajasthani Designs</span>
+      <span>Floral Art</span>
+      <span>Festive Occasions</span>
+      <span>Bridal Mehandi</span>
+      <span>Arabic Patterns</span>
+      <span>Rajasthani Designs</span>
+      <span>Floral Art</span>
+      <span>Festive Occasions</span>
+    </div>
+  </div>
+
+  <!-- ── ABOUT ── -->
+  <section class="about">
+    <div class="about-art reveal">
+      <div class="big-circle">
+        <svg viewBox="0 0 300 300" width="240" height="240" fill="none">
+          <!-- Simplified hand outline with henna -->
+          <path d="M150 280 C120 260 80 220 70 180 C60 140 65 100 70 80 C72 70 78 65 85 68 C92 71 93 80 92 95 L90 130 C90 130 95 125 100 100 C104 80 108 68 116 66 C124 64 130 70 128 90 L126 125 C126 125 131 118 136 98 C140 80 145 70 153 70 C161 70 165 80 163 100 L161 128 C161 128 167 120 172 105 C177 88 183 78 191 80 C199 82 200 95 197 112 C194 128 188 150 188 160 L200 130 C204 118 210 110 217 112 C224 114 226 126 222 142 C218 158 205 190 195 210 C185 230 175 260 150 280Z" fill="#c8922a" opacity="0.25" stroke="#c8922a" stroke-width="1.5"/>
+          <!-- Henna lines on hand -->
+          <path d="M130 200 Q145 190 160 195" stroke="#b5451b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <path d="M120 215 Q150 200 175 210" stroke="#b5451b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <circle cx="150" cy="230" r="6" fill="none" stroke="#c8922a" stroke-width="1"/>
+          <circle cx="150" cy="230" r="3" fill="#c8922a" opacity="0.5"/>
+          <path d="M138 245 Q150 238 162 245" stroke="#b5451b" stroke-width="1" fill="none"/>
+          <!-- Small petals on fingers -->
+          <circle cx="88" cy="90" r="4" fill="none" stroke="#c8922a" stroke-width="0.8"/>
+          <circle cx="115" cy="82" r="4" fill="none" stroke="#c8922a" stroke-width="0.8"/>
+          <circle cx="143" cy="80" r="4" fill="none" stroke="#c8922a" stroke-width="0.8"/>
+          <circle cx="170" cy="88" r="4" fill="none" stroke="#c8922a" stroke-width="0.8"/>
+        </svg>
+      </div>
+      <div class="accent-circle"></div>
+      <div class="small-line"></div>
+    </div>
+
+    <div>
+      <p class="section-label reveal">About the Art</p>
+      <h2 class="section-title reveal">
+        A tradition as old<br>
+        as <em>celebration itself</em>
+      </h2>
+      <p class="section-body reveal">
+        Mehandi, also known as Henna, is one of India's most beloved art forms — a centuries-old tradition of adorning hands and feet with intricate patterns made from the natural henna plant.
+      </p>
+      <p class="section-body reveal">
+        Every design tells a story. From the delicate florals of a bride's hands to the bold geometric patterns of a festival, our artists bring your vision to life with a steady hand and a heart full of tradition.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── SERVICES ── -->
+  <section class="services">
+    <div class="services-header">
+      <p class="section-label" style="color: var(--gold);">What We Offer</p>
+      <h2 class="section-title reveal">Our Designs</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-num">01</div>
+        <svg class="service-icon" viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="22" r="18" stroke="#c8922a" stroke-width="1"/>
+          <circle cx="22" cy="22" r="8" fill="#c8922a" opacity="0.3"/>
+          <circle cx="22" cy="22" r="3" fill="#e8b84b"/>
+        </svg>
+        <h3 class="service-name">Bridal Mehandi</h3>
+        <p class="service-desc">Full hand and foot coverage with intricate patterns that symbolize love, prosperity and new beginnings. A must for every Indian bride.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">02</div>
+        <svg class="service-icon" viewBox="0 0 44 44" fill="none">
+          <path d="M22 4 Q30 14 38 22 Q30 30 22 40 Q14 30 6 22 Q14 14 22 4Z" stroke="#c8922a" stroke-width="1" fill="none"/>
+          <circle cx="22" cy="22" r="4" fill="#e8b84b" opacity="0.6"/>
+        </svg>
+        <h3 class="service-name">Arabic Patterns</h3>
+        <p class="service-desc">Bold, flowing designs with large floral motifs and open spaces — elegant and modern, perfect for any occasion.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">03</div>
+        <svg class="service-icon" viewBox="0 0 44 44" fill="none">
+          <rect x="8" y="8" width="28" height="28" stroke="#c8922a" stroke-width="1" rx="2"/>
+          <rect x="14" y="14" width="16" height="16" stroke="#c8922a" stroke-width="0.6" rx="1"/>
+          <circle cx="22" cy="22" r="3" fill="#e8b84b" opacity="0.7"/>
+        </svg>
+        <h3 class="service-name">Rajasthani Art</h3>
+        <p class="service-desc">Traditional Rajasthani designs filled with peacocks, paisleys and fine latticework — the most detailed and elaborate style.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">04</div>
+        <svg class="service-icon" viewBox="0 0 44 44" fill="none">
+          <ellipse cx="22" cy="22" rx="16" ry="10" stroke="#c8922a" stroke-width="1"/>
+          <ellipse cx="22" cy="22" rx="10" ry="16" stroke="#c8922a" stroke-width="1"/>
+        </svg>
+        <h3 class="service-name">Festive Designs</h3>
+        <p class="service-desc">Quick and beautiful patterns for Diwali, Eid, Navratri, baby showers and all life's joyful moments.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">05</div>
+        <svg class="service-icon" viewBox="0 0 44 44" fill="none">
+          <path d="M22 8 L26 18 L38 18 L28 25 L32 36 L22 29 L12 36 L16 25 L6 18 L18 18Z" stroke="#c8922a" stroke-width="1" fill="none"/>
+        </svg>
+        <h3 class="service-name">Custom Art</h3>
+        <p class="service-desc">Your story, your pattern. We create bespoke designs incorporating initials, symbols and motifs that are uniquely yours.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">06</div>
+        <svg class="service-icon" viewBox="0 0 44 44" fill="none">
+          <path d="M8 22 Q22 6 36 22 Q22 38 8 22Z" stroke="#c8922a" stroke-width="1" fill="none"/>
+          <circle cx="22" cy="22" r="5" fill="#c8922a" opacity="0.3"/>
+          <circle cx="22" cy="22" r="2" fill="#e8b84b"/>
+        </svg>
+        <h3 class="service-name">Kids & Events</h3>
+        <p class="service-desc">Fun, quick, and washable henna designs for children's parties and large group events. Everyone deserves to feel special.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROCESS ── -->
+  <section class="process">
+    <div class="process-header">
+      <p class="section-label reveal">How It Works</p>
+      <h2 class="section-title reveal">From Consultation<br>to <em>Creation</em></h2>
+    </div>
+    <div class="process-steps">
+      <div class="step reveal">
+        <div class="step-dot">I</div>
+        <h4 class="step-title">Choose Your Style</h4>
+        <p class="step-desc">Browse our portfolio and pick a design style that resonates with your occasion and personality.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-dot">II</div>
+        <h4 class="step-title">Book a Session</h4>
+        <p class="step-desc">Schedule an appointment at your home, our studio, or your event venue — we come to you.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-dot">III</div>
+        <h4 class="step-title">The Application</h4>
+        <p class="step-desc">Sit back and relax as our artist creates your design. A meditative, beautiful experience.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-dot">IV</div>
+        <h4 class="step-title">Let It Develop</h4>
+        <p class="step-desc">The henna deepens over 24–48 hours into a rich, warm brown — the longer you wait, the darker it gets.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── OCCASIONS ── -->
+  <section class="occasions">
+    <div class="occasions-header">
+      <p class="section-label">Perfect For</p>
+      <h2 class="section-title reveal">Every Celebration<br>Deserves <em>Mehandi</em></h2>
+    </div>
+    <div class="occasions-list reveal">
+      <div class="occasion-pill">Weddings</div>
+      <div class="occasion-pill">Sangeet Nights</div>
+      <div class="occasion-pill">Diwali</div>
+      <div class="occasion-pill">Eid</div>
+      <div class="occasion-pill">Navratri</div>
+      <div class="occasion-pill">Baby Showers</div>
+      <div class="occasion-pill">Teej</div>
+      <div class="occasion-pill">Karva Chauth</div>
+      <div class="occasion-pill">Birthday Parties</div>
+      <div class="occasion-pill">Corporate Events</div>
+      <div class="occasion-pill">Photoshoots</div>
+      <div class="occasion-pill">Any Occasion</div>
+    </div>
+  </section>
+
+  <!-- ── GALLERY ── -->
+  <section class="gallery" id="gallery">
+    <div class="gallery-header">
+      <p class="section-label">Our Work</p>
+      <h2 class="section-title reveal">A Glimpse of<br><em>Our Artistry</em></h2>
+      <a href="https://www.instagram.com/sindhu_rosisetty_01?igsh=djZnNW5jN21rb25q" target="_blank" class="insta-link reveal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        @sindhu_rosisetty_01
+      </a>
+    </div>
+    <div class="insta-follow-box reveal">
+      <div class="insta-follow-inner">
+        <div class="insta-icon-wrap">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="url(#ig-grad)" stroke-width="1.2">
+            <defs>
+              <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#f09433"/>
+                <stop offset="25%" stop-color="#e6683c"/>
+                <stop offset="50%" stop-color="#dc2743"/>
+                <stop offset="75%" stop-color="#cc2366"/>
+                <stop offset="100%" stop-color="#bc1888"/>
+              </linearGradient>
+            </defs>
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="5"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="url(#ig-grad)" stroke="none"/>
+          </svg>
+        </div>
+        <h3 class="insta-follow-title">See Our Latest Designs</h3>
+        <p class="insta-follow-handle">@sindhu_rosisetty_01</p>
+        <p class="insta-follow-desc">We post our newest mehandi designs, bridal work and festive art on Instagram. Follow us to stay inspired!</p>
+        <a href="https://www.instagram.com/sindhu_rosisetty_01?igsh=djZnNW5jN21rb25q" target="_blank" class="insta-follow-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          Follow on Instagram
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BOOKING ── -->
+  <section class="booking" id="booking">
+    <div class="booking-content">
+      <p class="section-label">Ready to Begin?</p>
+      <h2 class="section-title reveal">Let's Adorn<br>Your Hands</h2>
+      <p class="booking-sub reveal">Every appointment is a celebration. Reach out and we'll craft something beautiful together.</p>
+      <div class="booking-btns reveal">
+        <a href="tel:+916304372575" class="book-btn">📞 Call Us</a>
+        <a href="https://wa.me/916304372575" target="_blank" class="book-btn book-btn-wa">💬 WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div>
+      <div class="footer-brand">Mehandi</div>
+      <div class="footer-tagline">The art of henna, carried forward with love</div>
+    </div>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/sindhu_rosisetty_01?igsh=djZnNW5jN21rb25q" target="_blank">Instagram</a>
+      <a href="https://wa.me/916304372575" target="_blank">WhatsApp</a>
+    </div>
+  </footer>
+
+  <script>
+    // Booking overlay
+    function openBooking() {
+      document.getElementById('bookingOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeBooking() {
+      document.getElementById('bookingOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('bookingOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeBooking();
+    });
+    function submitBooking() {
+      const name = document.getElementById('bookName').value.trim();
+      const place = document.getElementById('bookPlace').value.trim();
+      const design = document.getElementById('bookDesign').value;
+      if (!name || !place || !design) {
+        alert('Please fill in all the details before booking.');
+        return;
+      }
+      const msg = `Hi! I want to book a Mehandi design.%0A%0A👤 Name: ${encodeURIComponent(name)}%0A📍 Place: ${encodeURIComponent(place)}%0A🌿 Design: ${encodeURIComponent(design)}`;
+      window.open(`https://wa.me/916304372575?text=${msg}`, '_blank');
+    }
+
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top = mouseY + 'px';
+    });
+
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      ring.style.left = ringX + 'px';
+      ring.style.top = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    reveals.forEach(r => observer.observe(r));
+  </script>
+</body>
+</html>
